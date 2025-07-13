@@ -23,7 +23,7 @@ function Cart() {
             return (
               <div key={index}>
                 <div className="grid grid-cols-6 items-center text-gray-700 text-base my-3">
-                  <img className="w-14 rounded-xl shadow" src={url+"/images/"+item.image} alt="" />
+                  <img className="w-14 rounded-xl shadow" src={item.image} alt="" />
                   <p className="font-bold">{item.name}</p>
                   <p className="text-orange-600 font-bold">${item.price}</p>
                   <p>{cartItems[item._id]}</p>

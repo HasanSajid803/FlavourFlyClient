@@ -10,7 +10,7 @@ function FoodItem({id, name, price, description, image}) {
     <TiltedCard>
       <div className="w-full m-auto rounded-2xl bg-gradient-to-br from-orange-50 via-yellow-50 to-pink-50 border-2 border-orange-100 shadow-lg transition-all duration-300 overflow-hidden group">
         <div className="relative">
-          <img className="w-full rounded-t-2xl object-cover h-[200px]" src={url+"/images/"+image} alt={name} />
+          <img className="w-full rounded-t-2xl object-cover h-[200px]" src={image} alt={name} />
           {
             !cartItems[id] 
             ? <img className="w-[38px] absolute bottom-4 right-4 cursor-pointer rounded-full bg-white/90 p-2 shadow-lg" onClick={() => addToCart(id)} src={assets.add_icon_white} alt="Add to cart" />
