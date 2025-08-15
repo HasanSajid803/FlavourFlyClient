@@ -1,71 +1,118 @@
 import React, { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 function Cart() {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount } = useContext(StoreContext);
   const navigate = useNavigate()
 
+  const cartRows = food_list.filter((item)=>cartItems[item._id] > 0)
+
+  if (cartRows.length === 0) {
+    return (
+      <section className="w-full mt-8 py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Card className="max-w-md mx-auto">
+            <CardContent className="p-12 text-center">
+              <div className="text-6xl mb-4">🛒</div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Your cart is empty</h3>
+              <p className="text-muted-foreground mb-6">
+                Looks like you haven't added any delicious food to your cart yet.
+              </p>
+              <Button 
+                onClick={() => navigate('/')}
+                className="bg-gradient-to-r from-primary via-accent to-secondary hover:from-primary/90 hover:via-accent/90 hover:to-secondary/90 text-primary-foreground"
+              >
+                Browse Menu
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    )
+  }
+
   return (
-    <section className="w-full mt-18 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-yellow-50 via-orange-100 to-pink-50 p-8 sm:p-12 shadow-xl">
-        <div className="grid grid-cols-6 items-center text-gray-700 text-base font-semibold mb-4">
-          <p>Items</p>
-          <p>Title</p>
-          <p>Price</p>
-          <p>Quantity</p>
-          <p>Total</p>
-          <p>Remove</p>
-        </div>
-        <hr className="mb-4" />
-        {food_list.map((item, index) => {
-          if (cartItems[item._id] > 0) {
-            return (
-              <div key={index}>
-                <div className="grid grid-cols-6 items-center text-gray-700 text-base my-3">
-                  <img className="w-14 rounded-xl shadow" src={item.image} alt="" />
-                  <p className="font-bold">{item.name}</p>
-                  <p className="text-orange-600 font-bold">${item.price}</p>
-                  <p>{cartItems[item._id]}</p>
-                  <p className="font-bold">${item.price * cartItems[item._id]}</p>
-                  <p onClick={() => removeFromCart(item._id)} className="cursor-pointer text-red-500 font-bold text-lg">×</p>
-                </div>
-                <hr className="h-[1px] bg-orange-100 border-none" />
-              </div>
-            );
-          }
-        })}
-        <div className="mt-12 flex flex-col md:flex-row justify-between gap-10">
-          <div className="flex-1 flex flex-col gap-6 bg-white/80 rounded-2xl p-6 shadow-md">
-            <h2 className="font-extrabold text-orange-600 text-2xl mb-2 bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">Cart Totals</h2>
-            <div>
-              <div className="flex justify-between text-gray-700 font-medium">
-                <p>Subtotal</p>
-                <p>${getTotalCartAmount()}</p>
-              </div>
-              <hr className="my-2" />
-              <div className="flex justify-between text-gray-700 font-medium">
-                <p>Delivery Fee</p>
-                <p>${getTotalCartAmount() === 0 ? 0 : 2}</p>
-              </div>
-              <hr className="my-2" />
-              <div className="flex justify-between text-gray-800 font-bold">
-                <b>Total</b>
-                <b>${getTotalCartAmount() === 0 ? 0 :getTotalCartAmount() + 2}</b>
-              </div>
+    <section className="w-full mt-8 py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <Card className="w-full">
+          <CardHeader className="flex items-center justify-between">
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">Your Cart</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="w-full overflow-x-auto">
+              <Table className="min-w-[720px]">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Item</TableHead>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Quantity</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead>Remove</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {cartRows.map((item)=> (
+                    <TableRow key={item._id}>
+                      <TableCell>
+                        <img className="w-14 h-14 rounded-xl object-cover" src={item.image} alt="" />
+                      </TableCell>
+                      <TableCell className="font-semibold">{item.name}</TableCell>
+                      <TableCell className="text-primary font-semibold">${item.price}</TableCell>
+                      <TableCell>{cartItems[item._id]}</TableCell>
+                      <TableCell className="font-semibold">${item.price * cartItems[item._id]}</TableCell>
+                      <TableCell>
+                        <Button variant="destructive" size="sm" onClick={() => removeFromCart(item._id)}>Remove</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
-            <button onClick={() => navigate('/order')} className="mt-4 border-none text-white font-bold bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-400 w-full py-3 rounded-xl shadow-md text-lg cursor-pointer hover:scale-105 transition-transform">PROCEED TO CHECKOUT</button>
-          </div>
-          <div className="flex-1">
-            <div className="bg-white/80 rounded-2xl p-6 shadow-md">
-              <p className="text-gray-600 font-medium mb-2">If you have a promo code, Enter it here</p>
-              <div className="mt-2 flex justify-between items-center bg-orange-50 rounded-xl p-2">
-                <input className="bg-transparent text-gray-800 border-none outline-none pl-2 flex-1" type="text" placeholder="promo code" />
-                <button className="ml-2 border-none text-white font-bold bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-400 w-32 py-2 rounded-xl shadow-md cursor-pointer hover:scale-105 transition-transform">Submit</button>
-              </div>
+
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card className="bg-card/50">
+                <CardHeader>
+                  <CardTitle>Cart Totals</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <p>Subtotal</p>
+                      <p>${getTotalCartAmount()}</p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p>Delivery Fee</p>
+                      <p>${getTotalCartAmount() === 0 ? 0 : 2}</p>
+                    </div>
+                    <div className="flex justify-between text-base font-semibold">
+                      <p>Total</p>
+                      <p>${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</p>
+                    </div>
+                  </div>
+                  <Button className="mt-6 w-full bg-gradient-to-r from-primary via-accent to-secondary hover:from-primary/90 hover:via-accent/90 hover:to-secondary/90 text-primary-foreground" onClick={() => navigate('/order')}>Proceed to checkout</Button>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card/50">
+                <CardHeader>
+                  <CardTitle>Promo Code</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-2">
+                    <Input placeholder="promo code" className="flex-1" />
+                    <Button className="shrink-0">Submit</Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );

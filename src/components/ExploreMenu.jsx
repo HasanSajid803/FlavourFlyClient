@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { menu_list } from '../../src/assets/assets.js';
+import { menu_list } from '../assets/assets';
 
 function ExploreMenu({ category, setCategory }) {
   const containerVariants = {
@@ -42,21 +42,21 @@ function ExploreMenu({ category, setCategory }) {
 
   return (
     <section id='menu' className="relative w-full py-16 rounded-3xl shadow-xl px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50" />
+      {/* Background gradient using theme tokens */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-card/95 to-background" />
       
-      {/* Animated background shapes */}
+      {/* Animated background shapes (subtle, themed) */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8, x: -100 }}
-        animate={{ opacity: 0.1, scale: 1, x: 0 }}
+        animate={{ opacity: 0.08, scale: 1, x: 0 }}
         transition={{ duration: 1.5, delay: 0.5 }}
-        className="absolute top-10 left-10 w-64 h-64 bg-gradient-to-br from-orange-300 via-yellow-300 to-pink-300 rounded-full blur-3xl"
+        className="absolute top-10 left-10 w-64 h-64 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-full blur-3xl"
       />
       <motion.div
         initial={{ opacity: 0, scale: 0.8, x: 100 }}
-        animate={{ opacity: 0.08, scale: 1, x: 0 }}
+        animate={{ opacity: 0.06, scale: 1, x: 0 }}
         transition={{ duration: 1.5, delay: 0.7 }}
-        className="absolute bottom-10 right-10 w-64 h-64 bg-gradient-to-tl from-pink-300 via-yellow-300 to-orange-300 rounded-full blur-3xl"
+        className="absolute bottom-10 right-10 w-64 h-64 bg-gradient-to-tl from-secondary/20 via-primary/20 to-accent/20 rounded-full blur-3xl"
       />
 
       <div className="relative z-10 max-w-7xl mx-auto">
@@ -72,9 +72,9 @@ function ExploreMenu({ category, setCategory }) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4"
           >
-            Explore our <span className="bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">menu</span>
+            Explore our <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">menu</span>
           </motion.h2>
           
           <motion.p 
@@ -82,7 +82,7 @@ function ExploreMenu({ category, setCategory }) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
             Choose from a diverse menu featuring a delectable array of dishes. Our mission is to satisfy your cravings and elevate your dining experience, one delicious meal at a time.
           </motion.p>
@@ -96,7 +96,7 @@ function ExploreMenu({ category, setCategory }) {
           className="flex items-center gap-6 md:gap-8 lg:gap-10 py-8 overflow-x-auto overflow-y-hidden scroll-smooth"
           style={{
             scrollbarWidth: 'thin',
-            scrollbarColor: '#f97316 #fef3c7'
+            scrollbarColor: 'var(--primary) var(--muted)'
           }}
         >
           {menu_list.map((item, index) => (
@@ -114,16 +114,16 @@ function ExploreMenu({ category, setCategory }) {
               <motion.div 
                 className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
                   category === item.menu_name 
-                    ? 'ring-4 ring-orange-400 shadow-2xl' 
-                    : 'hover:ring-2 hover:ring-orange-300 hover:shadow-xl'
+                    ? 'ring-4 ring-primary shadow-2xl' 
+                    : 'hover:ring-2 hover:ring-primary/50 hover:shadow-xl'
                 }`}
                 whileHover={{ 
                   boxShadow: category === item.menu_name 
-                    ? "0 25px 50px -12px rgba(255, 140, 0, 0.4)"
+                    ? "0 25px 50px -12px rgba(0,0,0,0.25)"
                     : "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
                 }}
               >
-                <div className="p-2 bg-gradient-to-br from-orange-50 to-pink-50">
+                <div className="p-2 bg-card">
                   <img 
                     src={item.menu_image} 
                     alt={item.menu_name}
@@ -134,8 +134,8 @@ function ExploreMenu({ category, setCategory }) {
               <motion.p 
                 className={`mt-4 text-sm md:text-base font-semibold transition-colors duration-300 ${
                   category === item.menu_name 
-                    ? 'text-orange-600' 
-                    : 'text-gray-700 group-hover:text-orange-500'
+                    ? 'text-primary' 
+                    : 'text-muted-foreground group-hover:text-primary'
                 }`}
                 whileHover={{ y: -2 }}
               >
@@ -150,7 +150,7 @@ function ExploreMenu({ category, setCategory }) {
           whileInView={{ scaleX: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
           viewport={{ once: true }}
-          className="h-px w-full bg-gradient-to-r from-transparent via-orange-300 to-transparent"
+          className="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent"
         />
       </div>
     </section>

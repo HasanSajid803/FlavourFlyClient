@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
+import Search from "./pages/Search";
 import Cart from "./pages/Cart";
 import PlaceOrder from "./pages/PlaceOrder";
 import Footer from "./components/Footer";
@@ -16,10 +17,11 @@ function App() {
 
   return (
     <>
-      <div className="w-[80%] m-auto">
+      <div className="w-full container mx-auto px-4 sm:px-6 lg:px-8">
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<PlaceOrder />} />
           <Route path="/verify" element={<Verify />} />
